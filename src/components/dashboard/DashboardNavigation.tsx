@@ -12,6 +12,9 @@ import {
   TbLayoutSidebarRightCollapseFilled,
 } from "react-icons/tb";
 
+
+import { HiUserGroup, HiOutlineUserGroup  } from "react-icons/hi2";
+
 import { useDashboardData } from "@/src/stores/dashboardStore";
 
 import { motion } from "framer-motion";
@@ -23,6 +26,22 @@ const DashboardNavigation = () => {
       name: "Overview",
       active: <TbLayoutDashboardFilled size={"26px"} />,
       inactive: <TbLayoutDashboard size={"26px"} />,
+    },
+
+    {
+      name: "Services",
+      active: <TbLayoutDashboardFilled size={"26px"} />,
+      inactive: <TbLayoutDashboard size={"26px"} />,
+    },
+    {
+      name: "Products",
+      active: <TbLayoutDashboardFilled size={"26px"} />,
+      inactive: <TbLayoutDashboard size={"26px"} />,
+    },
+    {
+      name: "Users",
+      active: <HiUserGroup  size={"26px"} />,
+      inactive: <HiOutlineUserGroup  size={"26px"} />,
     },
     {
       name: "Settings",
@@ -58,7 +77,7 @@ const DashboardNavigation = () => {
           : "w-[70px] px-3 rounded-tr-[10px] rounded-br-[10px]"
       } h-[100vh] overflow-hidden pt-5 duration-300 transition-all ease-in flex flex-col gap-10 items-start dark:shadow-custom-white shadow-custom-black bg-white dark:bg-monokai`}
     >
-      <div className="relative w-full flex items-center">
+      <div className="relative w-full flex justify-center">
         <Image
           src={Logo}
           alt="logo"
@@ -66,7 +85,7 @@ const DashboardNavigation = () => {
             expanded ? "scale-100" : "scale-0"
           } w-[96px] h-auto object-cover duration-300 transition-all ease-out`}
         />
-       
+
         <div
           onClick={() => setExpanded(!expanded)}
           className={`cursor-pointer absolute ${

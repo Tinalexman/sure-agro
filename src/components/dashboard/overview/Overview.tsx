@@ -8,9 +8,14 @@ import { AiFillProduct } from "react-icons/ai";
 import { TbReorder } from "react-icons/tb";
 import { FaServicestack } from "react-icons/fa6";
 import { MdDonutSmall } from "react-icons/md";
+import { BsFillCalendar2WeekFill } from "react-icons/bs";
+import { IoIosArrowDown } from "react-icons/io";
 
 import { AreaChart } from "@mantine/charts";
 import { data } from "./data";
+
+import { CircularProgressbar, buildStyles } from "react-circular-progressbar";
+import "react-circular-progressbar/dist/styles.css";
 
 interface iOverviewStats {
   title: string;
@@ -40,14 +45,33 @@ const Overview = () => {
       icon: <FaServicestack size={"48px"} className="text-primary-shade-3" />,
     },
     {
-      title: "Total",
+      title: "Users",
       value: 16,
       color: "#1D4875",
       icon: <MdDonutSmall size={"48px"} className="text-secondary" />,
     },
   ];
 
+  const [percentage, setPercentage] = useState<number>(0);
+
+  function animatePercentage() {
+    let counter = 0;
+
+    const intervalId = setInterval(() => {
+      counter += 1;
+
+      if (counter <= 75) {
+        setPercentage((prevPercentage) => Math.min(prevPercentage + 1, 75));
+        counter = 0;
+      } else {
+        clearInterval(intervalId);
+      }
+    }, 20);
+    return () => clearInterval(intervalId);
+  }
+
   useEffect(() => {
+    animatePercentage();
     useDashboardData.setState({ page: 0 });
   }, []);
 
@@ -90,24 +114,82 @@ const Overview = () => {
           );
         })}
       </div>
-      <div className="w-full h-[350px] flex gap-8">
+      <div className="w-full h-[400px] flex gap-8">
         <div className="w-[70%] h-full bg-white dark:bg-monokai shadow-custom-black dark:shadow-custom-white rounded-[20px] overflow-hidden">
           <AreaChart
-            h={350}
+            h={300}
             data={data}
             dataKey="date"
-            series={[
-              { name: "Apples", color: "indigo.6" },
-              { name: "Oranges", color: "blue.6" },
-              { name: "Tomatoes", color: "teal.6" },
-            ]}
+            series={[{ name: "Apples", color: "indigo.6" }]}
             curveType="bump"
-            tickLine="xy"
             gridAxis="none"
+
+            // withXAxis={false}
+            // withYAxis={false}
           />
         </div>
-        <div className="w-[30%] h-full rounded-[20px] bg-white dark:bg-monokai shadow-custom-black dark:shadow-custom-white">
+        <div className="w-[30%] px-5 py-5 h-full rounded-[20px] gap-8 bg-white dark:bg-monokai shadow-custom-black dark:shadow-custom-white flex flex-col items-center">
+          <div className="flex flex-col gap-5 w-full items-start">
+            <h1 className="text-monokai dark:text-white text-3xl">
+              Perfomance
+            </h1>
+            <div className="flex justify-between items-center w-full">
+              <div className="w-fit gap-3 flex items-center">
+                <div className="size-4 rounded-md bg-primary" />
+                <h2 className="text-monokai dark:text-white text-md">
+                  Progress
+                </h2>
+              </div>
 
+              <div className="w-fit gap-3 flex items-center text-monokai dark:text-slate-300 cursor-pointer">
+                <BsFillCalendar2WeekFill size={"16px"} />
+                <h2 className="text-md">This Week</h2>
+                <IoIosArrowDown size={"16px"} />
+              </div>
+            </div>
+          </div>
+
+          <div
+            style={{ width: 180, height: 180 }}
+            className="dark:block hidden"
+          >
+            <CircularProgressbar
+              value={percentage}
+              text={`${percentage}%`}
+              strokeWidth={9}
+              styles={buildStyles({
+                rotation: 0.5,
+                strokeLinecap: "round",
+                textSize: "16px",
+                pathTransitionDuration: 0.5,
+                pathColor: `#39E058`,
+                textColor: "#FFFFFF",
+                trailColor: "#202020",
+              })}
+            />
+          </div>
+          <div
+            style={{ width: 180, height: 180 }}
+            className="dark:hidden block"
+          >
+            <CircularProgressbar
+              value={percentage}
+              text={`${percentage}%`}
+              strokeWidth={9}
+              styles={buildStyles({
+                rotation: 0.5,
+                strokeLinecap: "round",
+                textSize: "16px",
+                pathTransitionDuration: 0.5,
+                pathColor: `#39E058`,
+                textColor: "#131313",
+                trailColor: "#E5E5E5",
+              })}
+            />
+          </div>
+          <h2 className="text-md text-monokai dark:text-slate-300">
+            15% more than last week
+          </h2>
         </div>
       </div>
     </div>

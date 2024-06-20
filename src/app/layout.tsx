@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Corben } from "next/font/google";
 import "./globals.css";
+import '@mantine/core/styles.css';
 
 import {
   MantineProvider,
