@@ -17,6 +17,22 @@ input {
 }
 
 
+th {
+  @apply text-monokai dark:text-white font-semibold text-[16px] text-start py-3;
+}
+
+tr > th {
+  @apply bg-slate-50 dark:bg-monokai-faded;
+}
+
+td {
+  @apply py-1
+}
+
+tr:nth-child(odd) {
+  @apply bg-neutral-light dark:bg-neutral-dark text-monokai 
+}
+
 .scrollbar-custom {
   scrollbar-width: none;
   scrollbar-color: transparent transparent;

@@ -10,13 +10,13 @@ import {
   TbSettingsFilled,
   TbLayoutSidebarLeftCollapseFilled,
   TbLayoutSidebarRightCollapseFilled,
-  TbLogout2 
+  TbLogout2,
 } from "react-icons/tb";
 
 import { HiUserGroup, HiOutlineUserGroup } from "react-icons/hi2";
 import { IoHelp } from "react-icons/io5";
-import { HiGift, HiOutlineGift  } from "react-icons/hi";
-import { MdLocalOffer, MdOutlineLocalOffer  } from "react-icons/md";
+import { HiGift, HiOutlineGift } from "react-icons/hi";
+import { MdLocalOffer, MdOutlineLocalOffer } from "react-icons/md";
 
 import { useDashboardData } from "@/src/stores/dashboardStore";
 
@@ -36,8 +36,8 @@ const DashboardNavigation = () => {
 
     {
       name: "Services",
-      active: <HiGift  size={"26px"} />,
-      inactive: <HiOutlineGift  size={"26px"} />,
+      active: <HiGift size={"26px"} />,
+      inactive: <HiOutlineGift size={"26px"} />,
     },
     {
       name: "Products",
@@ -64,8 +64,8 @@ const DashboardNavigation = () => {
     },
     {
       name: "Logout",
-      active: <TbLogout2  size={"26px"} />,
-      inactive: <TbLogout2  size={"26px"} />,
+      active: <TbLogout2 size={"26px"} />,
+      inactive: <TbLogout2 size={"26px"} />,
     },
   ];
 
@@ -100,9 +100,9 @@ const DashboardNavigation = () => {
     <div
       className={`${
         expanded
-          ? "w-[20%] px-5 rounded-tr-[20px] rounded-br-[20px]"
+          ? "w-[20%] pl-5 rounded-tr-[20px] rounded-br-[20px]"
           : "w-[70px] px-3 rounded-tr-[10px] rounded-br-[10px]"
-      } h-[100vh] overflow-hidden pt-5 duration-300 transition-all ease-in flex flex-col gap-10 items-start dark:shadow-custom-white shadow-custom-black bg-white dark:bg-monokai`}
+      } h-[100vh] overflow-hidden pt-5 duration-300 transition-all ease-in flex flex-col gap-10 items-center dark:shadow-custom-white shadow-custom-black bg-white dark:bg-monokai`}
     >
       <div className="relative w-full flex justify-center pt-10">
         <div
@@ -140,32 +140,39 @@ const DashboardNavigation = () => {
       <div className={`flex flex-col w-full gap-2`}>
         {navs.map((navItem: iNavigationItem, i: number) => {
           return (
-            <div
-              onClick={() => {
-                useDashboardData.getState().setPage(i);
-                routeToPage(i);
-              }}
-              key={i}
-              className={`w-full flex py-2 px-2 rounded-[10px] gap-2 items-center cursor-pointer hover:bg-primary-80 ${
-                currentPage === i
-                  ? "bg-primary text-white dark:shadow-custom-white shadow-custom-black"
-                  : "text-monokai dark:text-white"
-              } hover:text-white hover:scale-105 scale-100 transition-all ease-out duration-200`}
-            >
-              <div style={{ fontSize: "26px" }}>
-                {currentPage === i && navItem.active}
-                {currentPage !== i && navItem.inactive}
-              </div>
-              <h2
-                style={{
-                  transitionDelay: `${i + 3}00ms`,
+            <div key={i} className="flex w-full gap-[6px] items-center">
+              <div
+                onClick={() => {
+                  useDashboardData.getState().setPage(i);
+                  routeToPage(i);
                 }}
-                className={`whitespace-pre text-monkai dark:text-white hover:text-white text-md duration-500 ${
-                  !expanded && "opacity-0 translate-x-28 overflow-hidden "
-                }`}
+                className={`w-full flex py-2 px-2 rounded-[10px] gap-2 items-center cursor-pointer hover:bg-primary ${
+                  currentPage === i
+                    ? "bg-neutral-light dark:bg-neutral-dark text-monokai dark:text-white dark:shadow-custom-white shadow-custom-black"
+                    : "text-monokai-faded dark:text-slate-300"
+                }  hover:scale-105 scale-100 transition-all ease-out duration-200`}
               >
-                {navItem.name}
-              </h2>
+                <div style={{ fontSize: "26px" }}>
+                  {currentPage === i && navItem.active}
+                  {currentPage !== i && navItem.inactive}
+                </div>
+                <h2
+                  style={{
+                    transitionDelay: `${i + 3}00ms`,
+                  }}
+                  className={`whitespace-pre text-md duration-500 ${
+                    !expanded && "opacity-0 translate-x-28 overflow-hidden "
+                  }`}
+                >
+                  {navItem.name}
+                </h2>
+              </div>
+
+              <div
+                className={`w-[6px] h-8 rounded-bl-[4px] rounded-tl-[4px] ${
+                  currentPage === i && "bg-primary"
+                }`}
+              />
             </div>
           );
         })}
@@ -173,37 +180,46 @@ const DashboardNavigation = () => {
       <div className={`flex flex-col w-full gap-2 mt-16`}>
         {bottomSection.map((navItem: iNavigationItem, i: number) => {
           return (
-            <div
-              onClick={() => {
-                useDashboardData.getState().setPage(i + navs.length);
-                routeToPage(i + navs.length);
-              }}
-              key={i}
-              className={`w-full flex py-2 px-2 rounded-[10px] gap-2 items-center cursor-pointer hover:bg-primary-80 ${
-                currentPage === (i + navs.length)
-                  ? "bg-primary text-white dark:shadow-custom-white shadow-custom-black"
-                  : "text-monokai dark:text-white"
-              } hover:text-white hover:scale-105 scale-100 transition-all ease-out duration-200`}
-            >
-              <div style={{ fontSize: "26px" }}>
-                {currentPage === i && navItem.active}
-                {currentPage !== i && navItem.inactive}
-              </div>
-              <h2
-                style={{
-                  transitionDelay: `${i + 3}00ms`,
+            <div key={i + navs.length} className="flex w-full gap-[6px] items-center">
+              <div
+                onClick={() => {
+                  useDashboardData.getState().setPage(i + navs.length);
+                  routeToPage(i + navs.length);
                 }}
-                className={`whitespace-pre text-monkai dark:text-white hover:text-white text-md duration-500 ${
-                  !expanded && "opacity-0 translate-x-28 overflow-hidden "
-                }`}
+                className={`w-full flex py-2 px-2 rounded-[10px] gap-2 items-center cursor-pointer hover:bg-primary ${
+                  currentPage === (i + navs.length)
+                    ? "bg-neutral-light dark:bg-neutral-dark text-monokai dark:text-white dark:shadow-custom-white shadow-custom-black"
+                    : "text-monokai-faded dark:text-slate-300"
+                }  hover:scale-105 scale-100 transition-all ease-out duration-200`}
               >
-                {navItem.name}
-              </h2>
+                <div style={{ fontSize: "26px" }}>
+                  {currentPage === i + navs.length && navItem.active}
+                  {currentPage !== i + navs.length && navItem.inactive}
+                </div>
+                <h2
+                  style={{
+                    transitionDelay: `${i + 3}00ms`,
+                  }}
+                  className={`whitespace-pre text-md duration-500 ${
+                    !expanded && "opacity-0 translate-x-28 overflow-hidden "
+                  }`}
+                >
+                  {navItem.name}
+                </h2>
+              </div>
+
+              <div
+                className={`w-[6px] h-8 rounded-bl-[4px] rounded-tl-[4px] ${
+                  currentPage === (i + navs.length) && "bg-primary"
+                }`}
+              />
             </div>
           );
         })}
       </div>
-      <h2 className="text-monokai-faded dark:text-slate-300 text-sm text-center">SureAgro - ©{new Date().getFullYear()}.</h2>
+      <h2 className="text-monokai-faded dark:text-slate-300 text-sm">
+        SureAgro ©{new Date().getFullYear()}.
+      </h2>
     </div>
   );
 };
