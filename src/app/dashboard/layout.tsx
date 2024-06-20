@@ -46,7 +46,7 @@ const DashboardLayout: FC<iDashboardLayout> = ({ children }) => {
             />
           </div>
         </div>
-        <div className="">{children}</div>
+        {children}
       </div>
     </div>
   );

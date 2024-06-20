@@ -15,3 +15,21 @@ body {
 input {
   @apply bg-white dark:bg-monokai rounded-[10px] pl-10 pr-4 focus:outline-none h-10 text-[16px]  font-medium placeholder:text-contrast-base text-monokai dark:text-white shadow-custom-black dark:shadow-custom-white;
 }
+
+
+.scrollbar-custom {
+  scrollbar-width: none;
+  scrollbar-color: transparent transparent;
+}
+
+.scrollbar-custom::-webkit-scrollbar {
+  width: 0px;
+}
+
+.scrollbar-custom::-webkit-scrollbar-thumb {
+  border-radius: 0px;
+}
+
+.scrollbar-custom::-webkit-scrollbar-track {
+  background-color: transparent;
+}

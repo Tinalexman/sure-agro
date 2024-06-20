@@ -16,6 +16,9 @@ const config: Config = {
       colors: {
         primary: "#39E058",
         "primary-80": "rgba(65, 240, 100, 1)",
+        "primary-shade-1": "#A8DF4C",
+        "primary-shade-2": "#E5DC5F",
+        "primary-shade-3": "#FFDA83",
         secondary: "#1D4875",
         "secondary-80": "rgba(40, 80, 130, 1)",
         tertiary: "#DEF2FF",
