@@ -56,10 +56,8 @@ const Overview = () => {
 
   function animatePercentage() {
     let counter = 0;
-
     const intervalId = setInterval(() => {
       counter += 1;
-
       if (counter <= 75) {
         setPercentage((prevPercentage) => Math.min(prevPercentage + 1, 75));
         counter = 0;
@@ -84,7 +82,7 @@ const Overview = () => {
               style={{
                 backgroundColor: stat.color,
               }}
-              className={`w-full h-[150px] flex justify-start items-center shadow-custom-black rounded-[20px] overflow-hidden`}
+              className={`relative w-full h-[150px] flex justify-start items-center shadow-custom-black rounded-[20px] overflow-hidden`}
               key={index}
             >
               <div
@@ -115,20 +113,30 @@ const Overview = () => {
         })}
       </div>
       <div className="w-full h-[400px] flex gap-8">
-        <div className="w-[70%] h-full bg-white dark:bg-monokai shadow-custom-black dark:shadow-custom-white rounded-[20px] overflow-hidden">
+        <div className="p-5 w-[70%] h-full flex flex-col justify-between bg-white dark:bg-monokai shadow-custom-black dark:shadow-custom-white rounded-[20px] overflow-hidden">
+          <div className="flex gap-5 w-full items-center justify-between">
+            <h1 className="text-monokai dark:text-white text-3xl">
+              Graph
+            </h1>
+            <div className="w-fit gap-3 flex items-center text-monokai dark:text-slate-300 cursor-pointer">
+              <BsFillCalendar2WeekFill size={"16px"} />
+              <h2 className="text-md">This Week</h2>
+              <IoIosArrowDown size={"16px"} />
+            </div>
+          </div>
+
           <AreaChart
             h={300}
             data={data}
             dataKey="date"
-            series={[{ name: "Apples", color: "indigo.6" }]}
+            series={[{ name: "Apples", color: "myColor.6" }]}
             curveType="bump"
             gridAxis="none"
-
-            // withXAxis={false}
-            // withYAxis={false}
+            withXAxis={false}
+            withYAxis={false}
           />
         </div>
-        <div className="w-[30%] px-5 py-5 h-full rounded-[20px] gap-8 bg-white dark:bg-monokai shadow-custom-black dark:shadow-custom-white flex flex-col items-center">
+        <div className="w-[30%] p-5 h-full rounded-[20px] gap-8 bg-white dark:bg-monokai shadow-custom-black dark:shadow-custom-white flex flex-col items-center">
           <div className="flex flex-col gap-5 w-full items-start">
             <h1 className="text-monokai dark:text-white text-3xl">
               Perfomance
@@ -156,7 +164,7 @@ const Overview = () => {
             <CircularProgressbar
               value={percentage}
               text={`${percentage}%`}
-              strokeWidth={9}
+              strokeWidth={10}
               styles={buildStyles({
                 rotation: 0.5,
                 strokeLinecap: "round",
@@ -175,7 +183,7 @@ const Overview = () => {
             <CircularProgressbar
               value={percentage}
               text={`${percentage}%`}
-              strokeWidth={9}
+              strokeWidth={10}
               styles={buildStyles({
                 rotation: 0.5,
                 strokeLinecap: "round",
