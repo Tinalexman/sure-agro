@@ -66,11 +66,7 @@ const DashboardNavigation = () => {
             expanded ? "scale-100" : "scale-0"
           } w-[96px] h-auto object-cover duration-300 transition-all ease-out`}
         />
-        <h1 className={`text-2xl ${expanded ? "translate-x-0 scale-100" : "translate-x-40 scale-75"} text-monokai dark:text-white duration-500 transition-all ease-out`}>
-          Su
-          <span className="text-primary">re Ag</span>
-          ro
-        </h1>
+       
         <div
           onClick={() => setExpanded(!expanded)}
           className={`cursor-pointer absolute ${
