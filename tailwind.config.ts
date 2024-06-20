@@ -15,10 +15,20 @@ const config: Config = {
       },
       colors: {
         primary: "#39E058",
+        "primary-80": "rgba(65, 240, 100, 1)",
         secondary: "#1D4875",
+        "secondary-80": "rgba(40, 80, 130, 1)",
         tertiary: "#DEF2FF",
         neutral: "#647899",
-      }
+        monokai: "#131313",
+        "monokai-faded": "#161616",
+        input: "#F4F4F4",
+        "contrast-base": "#474747",
+      },
+      boxShadow: {
+        "custom-black": "0 0 5px rgba(0, 0, 0, 0.1)",
+        "custom-white": "0 0 5px rgba(255, 255, 255, 0.1)",
+      },
     },
   },
   plugins: [],
