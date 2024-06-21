@@ -4,8 +4,6 @@ import DashboardNavigation from "@/src/components/dashboard/DashboardNavigation"
 import { convertDate } from "@/src/functions/dateFunctions";
 import { FC, ReactNode } from "react";
 
-import { v4 } from "uuid";
-
 import Image from "next/image";
 
 import { FiSearch } from "react-icons/fi";
@@ -64,7 +62,7 @@ const DashboardLayout: FC<iDashboardLayout> = ({ children }) => {
             </div>
 
             <Image
-              src={`https://gravatar.com/avatar/${v4()}?s=400&d=robohash&r=x`}
+              src={`https://gravatar.com/avatar/dummyID?s=400&d=robohash&r=x`}
               alt="profile-picture"
               width={50}
               height={50}
