@@ -59,6 +59,10 @@ tr:nth-child(odd) {
   background-color: transparent;
 }
 
+.big-1 {
+  @apply text-xl text-monokai dark:text-white
+}
+
 .big-2 {
   @apply text-2xl text-monokai dark:text-white
 }

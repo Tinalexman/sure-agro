@@ -15,6 +15,7 @@
     "@mantine/form": "^7.10.2",
     "@mantine/hooks": "^7.10.2",
     "@mantine/notifications": "^7.10.2",
+    "@rc-component/color-picker": "^1.5.3",
     "framer-motion": "^11.2.11",
     "next": "14.2.4",
     "react": "^18",

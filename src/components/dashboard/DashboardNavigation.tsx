@@ -26,7 +26,6 @@ export interface iNavigationItem {
   inactive: any;
 }
 
-
 const DashboardNavigation = () => {
   const navs: iNavigationItem[] = [
     {
@@ -58,11 +57,11 @@ const DashboardNavigation = () => {
   ];
 
   const bottomSection: iNavigationItem[] = [
-    {
-      name: "Help",
-      active: <IoHelp size={"26px"} />,
-      inactive: <IoHelp size={"26px"} />,
-    },
+    // {
+    //   name: "Help",
+    //   active: <IoHelp size={"26px"} />,
+    //   inactive: <IoHelp size={"26px"} />,
+    // },
     {
       name: "Logout",
       active: <TbLogout2 size={"26px"} />,
@@ -72,6 +71,8 @@ const DashboardNavigation = () => {
 
   const [expanded, setExpanded] = useState<boolean>(true);
   const currentPage = useDashboardData((state) => state.page);
+  const [hoveredItem, setHoveredItem] = useState<number>(0);
+
 
   const routeToPage = (page: number) => {
     let path: string = "";
@@ -96,12 +97,8 @@ const DashboardNavigation = () => {
         path = "/settings";
         break;
       }
-      case 5: {
-        path = "/help";
-        break;
-      }
     }
-    if (page !== 6) {
+    if (page !== 5) {
       window.location.assign(`/dashboard${path}`);
     } else {
       window.location.replace("/"); // Logout
@@ -152,16 +149,11 @@ const DashboardNavigation = () => {
       </div>
       <div className={`flex flex-col w-full gap-2`}>
         {navs.map((navItem: iNavigationItem, i: number) => {
-          const [isHovered, setIsHovered] = useState<boolean>(false);
-
           return (
-            <div
-              key={i}
-              className="flex w-full gap-[6px] items-center"
-              onMouseEnter={() => setIsHovered(true)}
-              onMouseLeave={() => setIsHovered(false)}
-            >
+            <div key={i} className="flex w-full gap-[6px] items-center">
               <div
+                onMouseEnter={() => setHoveredItem(i)}
+                onMouseLeave={() => setHoveredItem(-1)}
                 onClick={() => {
                   useDashboardData.getState().setPage(i);
                   routeToPage(i);
@@ -186,7 +178,7 @@ const DashboardNavigation = () => {
                 >
                   {navItem.name}
                 </h2>
-                <Tooltip text={navItem.name} visible={!expanded && isHovered} />
+                <Tooltip text={navItem.name} visible={!expanded && hoveredItem === i} />
               </div>
 
               <div
@@ -200,15 +192,14 @@ const DashboardNavigation = () => {
       </div>
       <div className={`flex flex-col w-full gap-2 mt-16`}>
         {bottomSection.map((navItem: iNavigationItem, i: number) => {
-          const [isHovered, setIsHovered] = useState<boolean>(false);
           return (
             <div
               key={i + navs.length}
               className="flex w-full gap-[6px] items-center"
-              onMouseEnter={() => setIsHovered(true)}
-              onMouseLeave={() => setIsHovered(false)}
             >
               <div
+                onMouseEnter={() => setHoveredItem(i + navs.length)}
+                onMouseLeave={() => setHoveredItem(-1)}
                 onClick={() => {
                   useDashboardData.getState().setPage(i + navs.length);
                   routeToPage(i + navs.length);
@@ -233,7 +224,7 @@ const DashboardNavigation = () => {
                 >
                   {navItem.name}
                 </h2>
-                <Tooltip text={navItem.name} visible={!expanded && isHovered} />
+                <Tooltip text={navItem.name} visible={!expanded && hoveredItem === i + navs.length} />
               </div>
 
               <div

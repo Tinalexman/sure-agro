@@ -4,9 +4,12 @@ import { MdOutlineDone } from "react-icons/md";
 
 import { HiOutlineGift } from "react-icons/hi";
 import { IoAdd, IoCloseOutline } from "react-icons/io5";
-import { tCategory } from "@/src/stores/categoryStore";
 
-import { faker } from "@faker-js/faker";
+
+import ColorPicker from "@rc-component/color-picker";
+import "@rc-component/color-picker/assets/index.css";
+
+// Add color to the category and icon to differentiate the category
 
 const AddCategory: FC<{ opened: boolean; close: () => void }> = ({
   opened,
@@ -14,9 +17,8 @@ const AddCategory: FC<{ opened: boolean; close: () => void }> = ({
 }) => {
   const [title, setTitle] = useState<string>("");
   const [category, setCategory] = useState<string>("");
-  const [categories, setCategories] = useState<string[]>([
-    
-  ]);
+  const [color, setColor] = useState<string>("");
+  const [categories, setCategories] = useState<string[]>([]);
 
   function addCategory(value: string) {
     if (value.length === 0) return;
@@ -36,79 +38,97 @@ const AddCategory: FC<{ opened: boolean; close: () => void }> = ({
       onClose={close}
       padding={"0px"}
       top={"0px"}
+      size={"45vw"}
       centered
     >
       <Modal.Overlay />
       <Modal.Body>
         <Modal.Content>
-          <div className="flex flex-col items-center gap-5 bg-white dark:bg-monokai px-5 py-8">
+          <div className="flex flex-col items-center gap-8 bg-white dark:bg-monokai px-10 py-8">
             <h1 className="big-2 text-center">Create New Category</h1>
 
-            <div className="w-full flex flex-col gap-1 relative">
-              <label className="text-md text-neutral-dark dark:text-neutral-light">
-                Category Name
-              </label>
-              <input
-                type="text"
-                placeholder="Enter category name"
-                className="w-full pl-10 pr-4"
-                value={title}
-                onChange={(e) => setTitle(e.target.value)}
-              />
-              <HiOutlineGift
-                className="text-contrast-base absolute top-[38px] left-2"
-                size={"22px"}
-              />
-            </div>
-
-            <div className="w-full flex flex-col gap-4">
-              <label className="text-md text-neutral-dark dark:text-neutral-light">
-                Category Contents
-              </label>
-
-              {categories.length > 0 && (
-                <div className="flex flex-wrap gap-4 items-center">
-                  {categories.map((ct, i) => {
-                    return (
-                      <div
-                        key={i}
-                        className="px-2 py-1 rounded bg-neutral-light dark:bg-neutral-dark text-monokai dark:text-white cursor-pointer gap-1 flex items-center"
-                      >
-                        {ct}
-                        <IoCloseOutline
-                          size={"20px"}
-                          onClick={() =>
-                            setCategories(
-                              categories.filter((_, index) => index !== i)
-                            )
-                          }
-                        />
-                      </div>
-                    );
-                  })}
+            <div className="flex justify-between w-full">
+              <div className="flex flex-col gap-5">
+                <div className="w-full flex flex-col gap-1 relative">
+                  <label className="text-md text-neutral-dark dark:text-neutral-light">
+                    Category Name
+                  </label>
+                  <input
+                    type="text"
+                    placeholder="Enter category name"
+                    className="w-full pl-10 pr-4"
+                    value={title}
+                    onChange={(e) => setTitle(e.target.value)}
+                  />
+                  <HiOutlineGift
+                    className="text-contrast-base absolute top-[38px] left-2"
+                    size={"22px"}
+                  />
                 </div>
-              )}
 
-              <div className="relative w-full">
-                <input
-                  type="text"
-                  placeholder="Enter category content"
-                  className="w-full pl-4 pr-10"
-                  value={category}
-                  onKeyDown={(e) => onKeyDown(e)}
-                  onChange={(e) => setCategory(e.target.value)}
-                />
-                <MdOutlineDone
-                  className="text-contrast-base absolute top-[10px] right-2 cursor-pointer"
-                  size={"22px"}
-                  onClick={() => addCategory(category)}
+                <div className="w-full flex flex-col gap-4">
+                  <label className="text-md text-neutral-dark dark:text-neutral-light">
+                    Category Contents
+                  </label>
+
+                  {categories.length > 0 && (
+                    <div className="flex flex-wrap gap-4 items-center">
+                      {categories.map((ct, i) => {
+                        return (
+                          <div
+                            key={i}
+                            className="px-2 py-1 rounded bg-neutral-light dark:bg-neutral-dark text-monokai dark:text-white cursor-pointer gap-1 flex items-center"
+                          >
+                            {ct}
+                            <IoCloseOutline
+                              size={"20px"}
+                              onClick={() =>
+                                setCategories(
+                                  categories.filter((_, index) => index !== i)
+                                )
+                              }
+                            />
+                          </div>
+                        );
+                      })}
+                    </div>
+                  )}
+
+                  <div className="relative w-full">
+                    <input
+                      type="text"
+                      placeholder="Enter category content"
+                      className="w-full pl-4 pr-10"
+                      value={category}
+                      onKeyDown={(e) => onKeyDown(e)}
+                      onChange={(e) => setCategory(e.target.value)}
+                    />
+                    <MdOutlineDone
+                      className="text-contrast-base absolute top-[10px] right-2 cursor-pointer"
+                      size={"22px"}
+                      onClick={() => addCategory(category)}
+                    />
+                  </div>
+                </div>
+              </div>
+
+              <div className="flex flex-col gap-1">
+                <label className="text-md text-neutral-dark dark:text-neutral-light">
+                  Category Color (Optional)
+                </label>
+                <ColorPicker
+                  defaultValue={"#39E058"}
+                  value={color}
+                  onChange={(col, type) => {
+                    setColor(col.toHexString());
+                  }}
                 />
               </div>
             </div>
 
             <button
               onClick={close}
-              className="rounded-[10px] font-medium flex items-center gap-2 justify-center text-lg bg-primary text-monokai dark:text-white w-full py-2 transition-colors duration-300 ease-out"
+              className="rounded-[10px] font-medium flex items-center gap-2 justify-center text-lg bg-primary text-monokai dark:text-white w-[200px] py-2 transition-colors duration-300 ease-out"
             >
               Add Category
               <IoAdd size={"26px"} />

@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { Corben } from "next/font/google";
 import "./globals.css";
-import '@mantine/core/styles.css';
+import "@mantine/core/styles.css";
 
 import {
   MantineProvider,
@@ -47,7 +47,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <head>
-        <ColorSchemeScript defaultColorScheme="auto" />
+        <ColorSchemeScript defaultColorScheme="light" />
       </head>
       <body className={corben.className}>
         <MantineProvider theme={theme}>{children}</MantineProvider>
