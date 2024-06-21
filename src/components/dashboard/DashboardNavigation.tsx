@@ -101,7 +101,7 @@ const DashboardNavigation = () => {
     if (page !== 5) {
       window.location.assign(`/dashboard${path}`);
     } else {
-      window.location.replace("/"); // Logout
+      window.location.replace("/auth/login"); // Logout
     }
   };
 

@@ -6,7 +6,7 @@ export type tDashboardNavigationData = {
 };
 
 export const useDashboardData = create<tDashboardNavigationData>((set) => ({
-  page: 0,
+  page: -1,
   setPage: (p: number) => {
     set({ page: p });
   },
