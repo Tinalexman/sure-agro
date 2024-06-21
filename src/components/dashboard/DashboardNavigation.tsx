@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { FC, useState } from "react";
 
 import Image from "next/image";
 import Logo from "@/public/Logo.png";
@@ -26,6 +26,7 @@ export interface iNavigationItem {
   inactive: any;
 }
 
+
 const DashboardNavigation = () => {
   const navs: iNavigationItem[] = [
     {
@@ -35,7 +36,7 @@ const DashboardNavigation = () => {
     },
 
     {
-      name: "Services",
+      name: "Categories",
       active: <HiGift size={"26px"} />,
       inactive: <HiOutlineGift size={"26px"} />,
     },
@@ -45,7 +46,7 @@ const DashboardNavigation = () => {
       inactive: <MdOutlineLocalOffer size={"26px"} />,
     },
     {
-      name: "Users",
+      name: "Partners",
       active: <HiUserGroup size={"26px"} />,
       inactive: <HiOutlineUserGroup size={"26px"} />,
     },
@@ -80,7 +81,7 @@ const DashboardNavigation = () => {
         break;
       }
       case 1: {
-        path = "/settings";
+        path = "/categories";
         break;
       }
       case 2: {
@@ -88,12 +89,23 @@ const DashboardNavigation = () => {
         break;
       }
       case 3: {
-        path = "/users";
+        path = "/partners";
+        break;
+      }
+      case 4: {
+        path = "/settings";
+        break;
+      }
+      case 5: {
+        path = "/help";
         break;
       }
     }
-
-    window.location.assign(`/dashboard${path}`);
+    if (page !== 6) {
+      window.location.assign(`/dashboard${path}`);
+    } else {
+      window.location.replace("/"); // Logout
+    }
   };
 
   return (
@@ -102,7 +114,7 @@ const DashboardNavigation = () => {
         expanded
           ? "w-[20%] pl-5 rounded-tr-[20px] rounded-br-[20px]"
           : "w-[70px] px-3 rounded-tr-[10px] rounded-br-[10px]"
-      } h-[100vh] overflow-hidden pt-5 duration-300 transition-all ease-in flex flex-col gap-10 items-center dark:shadow-custom-white shadow-custom-black bg-white dark:bg-monokai`}
+      } h-[100vh] z-10 pt-5 duration-300 transition-all ease-in flex flex-col gap-10 items-center dark:shadow-custom-white shadow-custom-black bg-white dark:bg-monokai`}
     >
       <div className="relative w-full flex justify-center pt-10">
         <div
@@ -121,7 +133,7 @@ const DashboardNavigation = () => {
         <div
           onClick={() => setExpanded(!expanded)}
           className={`cursor-pointer absolute ${
-            expanded ? "left-[90%]" : "left-3"
+            expanded ? "left-[80%]" : "left-3"
           } -top-2 duration-300 transition-all ease-out`}
         >
           {expanded ? (
@@ -135,12 +147,20 @@ const DashboardNavigation = () => {
               className="text-monokai dark:text-white"
             />
           )}
+          {/* <Tooltip text={expanded ? "Collapse Sidebar" : "Expand Sidebar"} visible={!expanded && isHovered} /> */}
         </div>
       </div>
       <div className={`flex flex-col w-full gap-2`}>
         {navs.map((navItem: iNavigationItem, i: number) => {
+          const [isHovered, setIsHovered] = useState<boolean>(false);
+
           return (
-            <div key={i} className="flex w-full gap-[6px] items-center">
+            <div
+              key={i}
+              className="flex w-full gap-[6px] items-center"
+              onMouseEnter={() => setIsHovered(true)}
+              onMouseLeave={() => setIsHovered(false)}
+            >
               <div
                 onClick={() => {
                   useDashboardData.getState().setPage(i);
@@ -150,7 +170,7 @@ const DashboardNavigation = () => {
                   currentPage === i
                     ? "bg-neutral-light dark:bg-neutral-dark text-monokai dark:text-white dark:shadow-custom-white shadow-custom-black"
                     : "text-monokai-faded dark:text-slate-300"
-                }  hover:scale-105 scale-100 transition-all ease-out duration-200`}
+                }  hover:scale-105 scale-100 transition-all ease-out duration-200 relative`}
               >
                 <div style={{ fontSize: "26px" }}>
                   {currentPage === i && navItem.active}
@@ -166,6 +186,7 @@ const DashboardNavigation = () => {
                 >
                   {navItem.name}
                 </h2>
+                <Tooltip text={navItem.name} visible={!expanded && isHovered} />
               </div>
 
               <div
@@ -179,15 +200,21 @@ const DashboardNavigation = () => {
       </div>
       <div className={`flex flex-col w-full gap-2 mt-16`}>
         {bottomSection.map((navItem: iNavigationItem, i: number) => {
+          const [isHovered, setIsHovered] = useState<boolean>(false);
           return (
-            <div key={i + navs.length} className="flex w-full gap-[6px] items-center">
+            <div
+              key={i + navs.length}
+              className="flex w-full gap-[6px] items-center"
+              onMouseEnter={() => setIsHovered(true)}
+              onMouseLeave={() => setIsHovered(false)}
+            >
               <div
                 onClick={() => {
                   useDashboardData.getState().setPage(i + navs.length);
                   routeToPage(i + navs.length);
                 }}
                 className={`w-full flex py-2 px-2 rounded-[10px] gap-2 items-center cursor-pointer hover:bg-primary ${
-                  currentPage === (i + navs.length)
+                  currentPage === i + navs.length
                     ? "bg-neutral-light dark:bg-neutral-dark text-monokai dark:text-white dark:shadow-custom-white shadow-custom-black"
                     : "text-monokai-faded dark:text-slate-300"
                 }  hover:scale-105 scale-100 transition-all ease-out duration-200`}
@@ -206,20 +233,37 @@ const DashboardNavigation = () => {
                 >
                   {navItem.name}
                 </h2>
+                <Tooltip text={navItem.name} visible={!expanded && isHovered} />
               </div>
 
               <div
                 className={`w-[6px] h-8 rounded-bl-[4px] rounded-tl-[4px] ${
-                  currentPage === (i + navs.length) && "bg-primary"
+                  currentPage === i + navs.length && "bg-primary"
                 }`}
               />
             </div>
           );
         })}
       </div>
-      <h2 className="text-monokai-faded dark:text-slate-300 text-sm">
+      <h2
+        className={`${
+          expanded ? "opacity-100" : "opacity-0"
+        } text-monokai-faded dark:text-slate-300 text-sm transition-opacity duration-300 ease-in-out`}
+      >
         SureAgro ©{new Date().getFullYear()}.
       </h2>
+    </div>
+  );
+};
+
+const Tooltip: FC<{ text: string; visible: boolean }> = ({ text, visible }) => {
+  return (
+    <div
+      className={`absolute left-16 z-10 ${
+        visible ? "opacity-100 translate-x-0" : "opacity-0 translate-x-40"
+      } bg-white text-monokai dark:bg-monokai dark:text-white rounded px-3 py-1 shadow-custom-black dark:shadow-custom-white transition-all duration-300 ease-in-out`}
+    >
+      {text}
     </div>
   );
 };

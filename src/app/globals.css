@@ -13,7 +13,7 @@ body {
 }
 
 input {
-  @apply bg-white dark:bg-monokai rounded-[10px] pl-10 pr-4 focus:outline-none h-10 text-[16px]  font-medium placeholder:text-contrast-base text-monokai dark:text-white shadow-custom-black dark:shadow-custom-white;
+  @apply bg-white dark:bg-monokai rounded-[10px] focus:outline-none py-2 text-[14px]  font-medium placeholder:text-neutral-light placeholder:dark:text-neutral-dark text-monokai dark:text-white shadow-custom-black dark:shadow-custom-white;
 }
 
 
@@ -33,6 +33,15 @@ tr:nth-child(odd) {
   @apply bg-neutral-light dark:bg-neutral-dark text-monokai 
 }
 
+::selection {
+  @apply bg-neutral-dark dark:bg-neutral-light text-white dark:text-monokai;
+}
+
+::-moz-selection {
+  @apply bg-neutral-dark dark:bg-neutral-light text-white dark:text-monokai;
+}
+
+
 .scrollbar-custom {
   scrollbar-width: none;
   scrollbar-color: transparent transparent;
@@ -48,4 +57,16 @@ tr:nth-child(odd) {
 
 .scrollbar-custom::-webkit-scrollbar-track {
   background-color: transparent;
+}
+
+.big-2 {
+  @apply text-2xl text-monokai dark:text-white
+}
+
+.big-3 {
+  @apply text-3xl text-monokai dark:text-white
+}
+
+.big-4 {
+  @apply text-4xl text-monokai dark:text-white
 }

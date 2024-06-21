@@ -7,7 +7,7 @@ import { useDashboardData } from "@/src/stores/dashboardStore";
 import { tUser, createRandomUsers } from "./types";
 import { convertDateWithJustSlashes } from "@/src/functions/dateFunctions";
 
-const Users = () => {
+const Partners = () => {
   const [users, setUsers] = useState<tUser[]>([]);
 
   useEffect(() => {
@@ -52,4 +52,4 @@ const Users = () => {
   );
 };
 
-export default Users;
+export default Partners;

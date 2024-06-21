@@ -21,14 +21,14 @@ const DashboardLayout: FC<iDashboardLayout> = ({ children }) => {
       <DashboardNavigation />
       <div className="w-full h-[100vh] flex flex-col px-8 py-5 bg-slate-50 dark:bg-monokai-faded">
         <div className="h-[100px] w-full flex items-center justify-between">
-          <div className="flex flex-col gap-1 text-monokai dark:text-white">
-            <h1 className="text-3xl">Welcome Back, 🥳</h1>
-            <p className="text-md">{convertDate(new Date())}</p>
+          <div className="flex flex-col gap-1">
+            <h1 className="big-3">Welcome Back, 🥳</h1>
+            <p className="text-md text-monokai dark:text-white">{convertDate(new Date())}</p>
           </div>
 
           <div className="w-fit flex items-center gap-5">
             <div className="w-[250px] relative">
-              <input type="text" placeholder="Search..." className="w-full" />
+              <input type="text" placeholder="Search..." className="w-full pl-10 pr-4" />
               <FiSearch
                 className="text-contrast-base absolute top-[10px] left-2"
                 size={"20px"}
