@@ -166,7 +166,7 @@ const AddCategory: FC<{ opened: boolean; close: () => void }> = ({
               </Tabs.Panel>
 
               <Tabs.Panel value="color">
-                <div className="py-4 flex justify-between items-start w-full">
+                <div className="py-4 flex justify-between items-center w-full">
                   <div className="w-[200px]">
                     <HexColorPicker
                       color={category.color}
@@ -179,9 +179,21 @@ const AddCategory: FC<{ opened: boolean; close: () => void }> = ({
                     />
                   </div>
 
-                  <div className="flex flex-col gap-4 w-[220px]">
-                    <h2 className="large-1">Preview</h2>
-                    <CategoryContainer category={category} />
+                  <div className="flex flex-col gap-6 w-[220px]">
+                    <div className="flex flex-col gap-1">
+                      <h2 className="large-1">Preview</h2>
+                      <CategoryContainer category={category} />
+                    </div>
+                    <button
+                      onClick={close}
+                      className={`rounded-[10px] font-medium flex items-center gap-2 justify-center text-lg ${
+                        filled
+                          ? "bg-primary"
+                          : "bg-neutral-light : dark:bg-neutral-darkF"
+                      } text-monokai dark:text-white w-[180px] py-2 transition-colors duration-300 ease-out`}
+                    >
+                      Create Category
+                    </button>
                   </div>
                 </div>
               </Tabs.Panel>

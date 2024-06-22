@@ -1,6 +1,5 @@
 import React, { FC } from "react";
 import { tCategory } from "./types";
-import { HiGift } from "react-icons/hi2";
 
 interface iContainerProp {
   category: tCategory;
@@ -11,7 +10,7 @@ const CategoryContainer: FC<iContainerProp> = ({ category }) => {
   const Icon = category.icon;
 
   return (
-    <div className="w-full h-[100px] flex justify-between items-center px-8 py-4 rounded-[10px] relative overflow-hidden shadow-custom-black dark:shadow-custom-white cursor-pointer transition-all duration-300 ease-out hover:scale-105 scale-100">
+    <div className="w-full h-[100px] flex justify-between items-center pl-8 pr-4 py-4 rounded-[10px] relative overflow-hidden shadow-custom-black dark:shadow-custom-white cursor-pointer transition-all duration-300 ease-out hover:scale-105 scale-100">
       <div
         className="w-3 h-full absolute top-0 left-0"
         style={{

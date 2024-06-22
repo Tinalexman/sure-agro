@@ -17,13 +17,27 @@ import CategoryContainer from "./CategoryContainer";
 const Categories = () => {
   const [opened, { open, close }] = useDisclosure(false);
   const [categories, setCategories] = useState<tCategory[]>([]);
+  const [filteredCategories, setFilteredCategories] = useState<tCategory[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
+  const filter = useDashboardData((state) => state.searchFilter);
+
+  
+  
+  function searchCategories(search: string) {
+
+    console.log("In search");
+  }
 
   useEffect(() => {
     useDashboardData.setState({ page: 1 });
-    setCategories(createRandomCategories(18));
+    let c = createRandomCategories(18);
+    setCategories(c);
+    setFilteredCategories(c);
     setLoading(false);
   }, []);
+
+  
+  searchCategories(filter);
 
   return (
     <>

@@ -74,33 +74,9 @@ const DashboardNavigation = () => {
   const currentPage = useDashboardData((state) => state.page);
   const [hoveredItem, setHoveredItem] = useState<number>(0);
 
-
   const routeToPage = (page: number) => {
-    let path: string = "";
-    switch (page) {
-      case 0: {
-        path = "/overview";
-        break;
-      }
-      case 1: {
-        path = "/categories";
-        break;
-      }
-      case 2: {
-        path = "/products";
-        break;
-      }
-      case 3: {
-        path = "/partners";
-        break;
-      }
-      case 4: {
-        path = "/settings";
-        break;
-      }
-    }
     if (page !== 5) {
-      window.location.assign(`/dashboard${path}`);
+      useDashboardData.getState().setPage(page);
     } else {
       window.location.replace("/auth/login"); // Logout
     }
@@ -145,7 +121,7 @@ const DashboardNavigation = () => {
               className="text-monokai dark:text-white"
             />
           )}
-          {/* <Tooltip text={expanded ? "Collapse Sidebar" : "Expand Sidebar"} visible={!expanded && isHovered} /> */}
+          
         </div>
       </div>
       <div className={`flex flex-col w-full gap-2`}>
@@ -179,7 +155,10 @@ const DashboardNavigation = () => {
                 >
                   {navItem.name}
                 </h2>
-                <Tooltip text={navItem.name} visible={!expanded && hoveredItem === i} />
+                <Tooltip
+                  text={navItem.name}
+                  visible={!expanded && hoveredItem === i}
+                />
               </div>
 
               <div
@@ -225,7 +204,10 @@ const DashboardNavigation = () => {
                 >
                   {navItem.name}
                 </h2>
-                <Tooltip text={navItem.name} visible={!expanded && hoveredItem === i + navs.length} />
+                <Tooltip
+                  text={navItem.name}
+                  visible={!expanded && hoveredItem === i + navs.length}
+                />
               </div>
 
               <div
@@ -247,7 +229,5 @@ const DashboardNavigation = () => {
     </div>
   );
 };
-
-
 
 export default DashboardNavigation;

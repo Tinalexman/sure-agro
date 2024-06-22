@@ -2,7 +2,6 @@
 
 import DashboardNavigation from "@/src/components/dashboard/DashboardNavigation";
 import { convertDate, getTimeOfDay } from "@/src/functions/dateFunctions";
-import { FC, ReactNode } from "react";
 
 import Image from "next/image";
 
@@ -13,14 +12,28 @@ import { FaMoon } from "react-icons/fa";
 import { FaSun } from "react-icons/fa6";
 
 import { useMantineColorScheme } from "@mantine/core";
+import { ReactNode } from "react";
+import { useDashboardData } from "@/src/stores/dashboardStore";
+import Overview from "@/src/components/dashboard/overview/Overview";
+import Categories from "@/src/components/dashboard/categories/Categories";
+import Products from "@/src/components/dashboard/products/Products";
+import Partners from "@/src/components/dashboard/partners/Partners";
+import Settings from "@/src/components/dashboard/settings/Settings";
 
-interface iDashboardLayout {
-  children: ReactNode;
-}
-
-const DashboardLayout: FC<iDashboardLayout> = ({ children }) => {
+const Dashboard = () => {
   const { setColorScheme } = useMantineColorScheme();
-  let currentDate : Date = new Date();
+  let currentDate: Date = new Date();
+
+  const index = useDashboardData((state) => state.page);
+  const search = useDashboardData((state) => state.searchFilter);
+
+  const children: ReactNode[] = [
+    <Overview key={"Overview"} />,
+    <Categories key={"Categories"} />,
+    <Products key={"Products"} />,
+    <Partners key={"Partners"} />,
+    <Settings key={"Settings"} />,
+  ];
 
   return (
     <div className="w-[100vw] h-[100vh] flex dark:bg-monokai bg-white">
@@ -40,6 +53,10 @@ const DashboardLayout: FC<iDashboardLayout> = ({ children }) => {
                 type="text"
                 placeholder="Search..."
                 className="w-full pl-10 pr-4"
+                value={search}
+                onChange={(e) => {
+                  useDashboardData.setState({searchFilter: e.target.value});
+                }}
               />
               <FiSearch
                 className="text-contrast-base absolute top-[10px] left-2"
@@ -54,11 +71,19 @@ const DashboardLayout: FC<iDashboardLayout> = ({ children }) => {
             </div>
 
             <div className="block dark:hidden">
-              <FaMoon onClick={() => setColorScheme("dark")} size={"22px"} className="text-monokai cursor-pointer" />
+              <FaMoon
+                onClick={() => setColorScheme("dark")}
+                size={"22px"}
+                className="text-monokai cursor-pointer"
+              />
             </div>
 
             <div className="hidden dark:block">
-              <FaSun onClick={() => setColorScheme("light")} size={"22px"} className="text-white cursor-pointer" />
+              <FaSun
+                onClick={() => setColorScheme("light")}
+                size={"22px"}
+                className="text-white cursor-pointer"
+              />
             </div>
 
             <Image
@@ -70,10 +95,10 @@ const DashboardLayout: FC<iDashboardLayout> = ({ children }) => {
             />
           </div>
         </div>
-        {children}
+        {children[index]}
       </div>
     </div>
   );
 };
 
-export default DashboardLayout;
+export default Dashboard;
