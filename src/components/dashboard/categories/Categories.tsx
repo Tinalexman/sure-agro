@@ -9,9 +9,10 @@ import { IoAdd } from "react-icons/io5";
 
 import { Loader } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
-import AddCategory from "./AddCategory";
+import AddCategory from "./AddCategoryModal";
 
 import { tCategory, createRandomCategories } from "./types";
+import CategoryContainer from "./CategoryContainer";
 
 const Categories = () => {
   const [opened, { open, close }] = useDisclosure(false);
@@ -48,36 +49,13 @@ const Categories = () => {
         {!loading && (
           <div className="w-full grid grid-cols-4 gap-6 px-4">
             {categories.map((category, i) => {
-              return (
-                <div
-                  key={i}
-                  className="w-full h-[100px] flex justify-between items-center px-8 py-4 rounded-[10px] relative overflow-hidden shadow-custom-black dark:shadow-custom-white cursor-pointer transition-all duration-300 ease-out hover:scale-105 scale-100"
-                >
-                  <div
-                    className="w-3 h-full absolute top-0 left-0"
-                    style={{
-                      background: category.color,
-                    }}
-                  />
-
-                  <div className="flex flex-col h-full">
-                    <h1 className="big-1">{category.name}</h1>
-                    <p className="text-md text-monokai dark:text-white underline">
-                      {category.contents.length} items
-                    </p>
-                  </div>
-                  <HiGift
-                    size={"36px"}
-                    className="text-neutral-dark dark:text-neutral-light"
-                  />
-                </div>
-              );
+              return <CategoryContainer key={i} category={category} />;
             })}
           </div>
         )}
         {loading && (
           <div className="w-full h-full flex justify-center items-center">
-            <Loader color="myColor.9"/>
+            <Loader color="myColor.9" />
           </div>
         )}
       </div>

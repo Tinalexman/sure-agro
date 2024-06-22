@@ -1,7 +1,7 @@
 "use client";
 
 import DashboardNavigation from "@/src/components/dashboard/DashboardNavigation";
-import { convertDate } from "@/src/functions/dateFunctions";
+import { convertDate, getTimeOfDay } from "@/src/functions/dateFunctions";
 import { FC, ReactNode } from "react";
 
 import Image from "next/image";
@@ -20,7 +20,7 @@ interface iDashboardLayout {
 
 const DashboardLayout: FC<iDashboardLayout> = ({ children }) => {
   const { setColorScheme } = useMantineColorScheme();
-
+  let currentDate : Date = new Date();
 
   return (
     <div className="w-[100vw] h-[100vh] flex dark:bg-monokai bg-white">
@@ -28,9 +28,9 @@ const DashboardLayout: FC<iDashboardLayout> = ({ children }) => {
       <div className="w-full h-[100vh] flex flex-col px-8 py-5 bg-slate-50 dark:bg-monokai-faded">
         <div className="h-[100px] w-full flex items-center justify-between">
           <div className="flex flex-col gap-1">
-            <h1 className="big-3">Welcome Back, 🥳</h1>
+            <h1 className="big-3">{getTimeOfDay(currentDate)}, 🥳</h1>
             <p className="text-md text-monokai dark:text-white">
-              {convertDate(new Date())}
+              {convertDate(currentDate)}
             </p>
           </div>
 

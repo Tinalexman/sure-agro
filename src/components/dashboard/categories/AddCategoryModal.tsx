@@ -3,11 +3,14 @@ import React, { FC, useState } from "react";
 import { MdOutlineDone } from "react-icons/md";
 
 import { HiOutlineGift } from "react-icons/hi";
-import { IoAdd, IoCloseOutline } from "react-icons/io5";
+import { IoCloseOutline } from "react-icons/io5";
 
-import ColorPicker from "@rc-component/color-picker";
-import "@rc-component/color-picker/assets/index.css";
 import IconBrowser from "./IconBrowser";
+
+import { HexColorPicker } from "react-colorful";
+
+import { tCategory, getRandomIcon } from "./types";
+import CategoryContainer from "./CategoryContainer";
 
 // Add color to the category and icon to differentiate the category
 
@@ -15,13 +18,17 @@ const AddCategory: FC<{ opened: boolean; close: () => void }> = ({
   opened,
   close,
 }) => {
-  const [title, setTitle] = useState<string>("");
-  const [category, setCategory] = useState<string>("");
-  const [color, setColor] = useState<string>("");
-  const [categories, setCategories] = useState<string[]>([]);
+  const [content, setContent] = useState<string>("");
   const [activeTab, setActiveTab] = useState<string | null>("details");
   const [filled, setFilled] = useState<boolean>(false);
-  
+
+  const [category, setCategory] = useState<tCategory>({
+    color: "#39E058",
+    contents: [],
+    id: "",
+    name: "",
+    icon: getRandomIcon(),
+  });
 
   function addCategory(value: string) {
     if (value.length === 0) return;
@@ -30,13 +37,13 @@ const AddCategory: FC<{ opened: boolean; close: () => void }> = ({
       setFilled(true);
     }
 
-    setCategories([...categories, value]);
-    setCategory("");
+    setCategory({ ...category, contents: [...category.contents, value] });
+    setContent("");
   }
 
   function onKeyDown(e: React.KeyboardEvent<HTMLInputElement>) {
     if (e.key === "Enter") {
-      addCategory(category);
+      addCategory(content);
     }
   }
 
@@ -46,7 +53,7 @@ const AddCategory: FC<{ opened: boolean; close: () => void }> = ({
       onClose={close}
       padding={"0px"}
       top={"0px"}
-      size={"35vw"}
+      size={"560px"}
       centered
     >
       <Modal.Overlay />
@@ -79,11 +86,12 @@ const AddCategory: FC<{ opened: boolean; close: () => void }> = ({
                       type="text"
                       placeholder="Enter category name"
                       className="w-full pl-10 pr-4"
-                      value={title}
+                      value={category.name}
                       onChange={(e) => {
-                        setTitle(e.target.value);
+                        setCategory({ ...category, name: e.target.value });
                         setFilled(
-                          e.target.value.length > 0 && categories.length > 0
+                          e.target.value.length > 0 &&
+                            category.contents.length > 0
                         );
                       }}
                     />
@@ -98,9 +106,9 @@ const AddCategory: FC<{ opened: boolean; close: () => void }> = ({
                       Category Contents (Optional)
                     </label>
 
-                    {categories.length > 0 && (
+                    {category.contents.length > 0 && (
                       <div className="flex flex-wrap gap-4 items-center">
-                        {categories.map((ct, i) => {
+                        {category.contents.map((ct, i) => {
                           return (
                             <div
                               key={i}
@@ -110,10 +118,13 @@ const AddCategory: FC<{ opened: boolean; close: () => void }> = ({
                               <IoCloseOutline
                                 size={"20px"}
                                 onClick={() => {
-                                  setFilled(categories.length - 1 > 0);
-                                  setCategories(
-                                    categories.filter((_, index) => index !== i)
-                                  );
+                                  setFilled(category.contents.length - 1 > 0);
+                                  setCategory({
+                                    ...category,
+                                    contents: category.contents.filter(
+                                      (_, index) => index !== i
+                                    ),
+                                  });
                                 }}
                               />
                             </div>
@@ -127,14 +138,14 @@ const AddCategory: FC<{ opened: boolean; close: () => void }> = ({
                         type="text"
                         placeholder="Enter category content"
                         className="w-full pl-4 pr-10"
-                        value={category}
+                        value={content}
                         onKeyDown={(e) => onKeyDown(e)}
-                        onChange={(e) => setCategory(e.target.value)}
+                        onChange={(e) => setContent(e.target.value)}
                       />
                       <MdOutlineDone
                         className="text-contrast-base absolute top-[10px] right-2 cursor-pointer"
                         size={"22px"}
-                        onClick={() => addCategory(category)}
+                        onClick={() => addCategory(content)}
                       />
                     </div>
                   </div>
@@ -143,23 +154,34 @@ const AddCategory: FC<{ opened: boolean; close: () => void }> = ({
 
               <Tabs.Panel value="icon">
                 <div className="py-4 flex justify-center">
-                  <IconBrowser />
+                  <IconBrowser
+                    setIcon={(type) =>
+                      setCategory({
+                        ...category,
+                        icon: type,
+                      })
+                    }
+                  />
                 </div>
               </Tabs.Panel>
 
               <Tabs.Panel value="color">
-                <div className="py-4 flex justify-around items-center">
-                  <ColorPicker
-                    defaultValue={"#39E058"}
-                    value={color}
-                    className="bg-monokai"
-                    onChange={(col, type) => {
-                      setColor(col.toHexString());
-                    }}
-                  />
-                  <div className="flex flex-col gap-4 ">
-                    <h2>Preview</h2>
+                <div className="py-4 flex justify-between items-start w-full">
+                  <div className="w-[200px]">
+                    <HexColorPicker
+                      color={category.color}
+                      onChange={(val) =>
+                        setCategory({
+                          ...category,
+                          color: val,
+                        })
+                      }
+                    />
+                  </div>
 
+                  <div className="flex flex-col gap-4 w-[220px]">
+                    <h2 className="large-1">Preview</h2>
+                    <CategoryContainer category={category} />
                   </div>
                 </div>
               </Tabs.Panel>
@@ -167,7 +189,9 @@ const AddCategory: FC<{ opened: boolean; close: () => void }> = ({
 
             <button
               onClick={close}
-              className={`rounded-[10px] ${activeTab === "icon" && "hidden"} font-medium flex items-center gap-2 justify-center text-lg ${
+              className={`rounded-[10px] ${
+                activeTab !== "details" && "hidden"
+              } font-medium flex items-center gap-2 justify-center text-lg ${
                 filled
                   ? "bg-primary"
                   : "bg-neutral-light : dark:bg-neutral-darkF"

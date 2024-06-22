@@ -12,10 +12,11 @@ interface Library {
 
 const PAGE_SIZE = 64;
 
-const IconBrowser: FC = () => {
+const IconBrowser: FC<{setIcon : (type : IconType) => void}> = ({setIcon}) => {
   const [libraries, setLibraries] = useState<Library>({});
   const [currentPage, setCurrentPage] = useState(1);
   const [loading, setLoading] = useState(true);
+  const [selectedIconName, setSelectedIconName] = useState<string | null>(null);
 
   useEffect(() => {
     const loadLibraries = async (): Promise<void> => {
@@ -28,19 +29,25 @@ const IconBrowser: FC = () => {
     loadLibraries();
   }, []);
 
-  const renderIcons = (
-    library: Record<string, IconType>,
-    page: number
-  ): JSX.Element[] => {
+  const RenderIcons: FC<{
+    library: Record<string, IconType>;
+    page: number;
+  }> = ({ library, page }): JSX.Element[] => {
     const iconsArray = Object.values(library);
     const startIndex = (page - 1) * PAGE_SIZE;
     const endIndex = startIndex + PAGE_SIZE;
+
     return iconsArray.slice(startIndex, endIndex).map((Icon, index) => (
+
       <div
         key={index}
-        className="cursor-pointer flex justify-center items-center hover:bg-primary hover:dark:bg-primary p-1 rounded transition-all ease-in duration-200"
+        onClick={() => {
+          setSelectedIconName(Icon.name);
+          setIcon(Icon);
+        }}
+        className={`cursor-pointer flex justify-center items-center ${selectedIconName === Icon.name && "bg-primary"} hover:bg-primary hover:dark:bg-primary p-1 rounded transition-all ease-in duration-200`}
       >
-        <Icon size={"28px"} className="text-monokai dark:text-white " />
+        <Icon size={"28px"} className="text-monokai dark:text-white" />
       </div>
     ));
   };
@@ -60,39 +67,58 @@ const IconBrowser: FC = () => {
         <>
           {Object.entries(libraries).map(([libName, icons]) => (
             <div key={libName} className="grid grid-cols-8 gap-4">
-              {renderIcons(icons, currentPage)}
+              <RenderIcons library={icons} page={currentPage} />
             </div>
           ))}
           <div className="flex justify-center items-center gap-4 mt-10">
             <MdArrowBackIos
-              onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
+              onClick={() => {
+                let prevPage = Math.max(currentPage - 1, 1);
+                setPageIndex(prevPage.toString());
+                setCurrentPage(prevPage);
+              }}
               size={"24px"}
               className={`text-monokai dark:text-white ${
                 currentPage === 1 && "hidden"
               } cursor-pointer`}
             />
-            <div className="w-fit gap-2 flex items-center">
+            <div className="w-fit gap-4 flex items-center">
               <input
-                type="number"
+                type="text"
                 value={pageIndex}
-                onChange={(e) => {
-                  let val = e.target.value.trim();
-                  if (val === "") {
-                    val = "1";
-                  }
+                className="w-12 px-2"
+                onKeyDown={(e) => {
+                  if (e.key === "Enter") {
+                    let val = pageIndex;
+                    if (val === "") {
+                      val = "1";
+                    }
 
-                  if (isNumeric(val) && parseInt(val) <= totalPages) {
-                    setCurrentPage(parseInt(val));
-                    setPageIndex(val);
+                    if (isNumeric(val)) {
+                      let parsedValue = parseInt(val);
+                      parsedValue =
+                        parsedValue < 1
+                          ? 1
+                          : parsedValue > totalPages
+                          ? totalPages
+                          : parsedValue;
+                      setCurrentPage(parsedValue);
+                      setPageIndex(parsedValue.toString());
+                    }
                   }
                 }}
+                onChange={(e) => {
+                  setPageIndex(e.target.value);
+                }}
               />
-              <p className="text-monokai dark:text-white">{`of ${totalPages}`}</p>
+              <p className="text-monokai dark:text-white select-none">{`of  ${totalPages}`}</p>
             </div>
             <MdArrowForwardIos
-              onClick={() =>
-                setCurrentPage((prev) => Math.min(prev + 1, totalPages))
-              }
+              onClick={() => {
+                let nextPage = Math.min(currentPage + 1, totalPages);
+                setPageIndex(nextPage.toString());
+                setCurrentPage(nextPage);
+              }}
               size={"24px"}
               className={`text-monokai dark:text-white ${
                 currentPage === totalPages && "hidden"
